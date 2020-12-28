@@ -27,8 +27,8 @@ def cost_function(x, y, theta):
 def gradient_descent(x, y):
     steps_l = []  # list for visualizing data
     n_iter = 500  # number of descent iterations
-    visualize_step = round(n_iter / 20) # we want to have 30 frames in visualization because it looks good
-    alpha = 0.1  # learning rate
+    visualize_step = round(n_iter / 20)  # we want to have 30 frames in visualization because it looks good
+    alpha = 0.05  # learning rate
     m = len(x)  # number of rows
     theta = np.array([0, 0])
 
@@ -51,7 +51,7 @@ def gradient_descent(x, y):
         new_theta_1 = theta[1] - alpha * sum_1 / m
         theta = [new_theta_0, new_theta_1]
         cost = cost_function(x, y, theta)
-        if iter % 100 == 0:  # debug output to see what is going on
+        if iter % visualize_step == 0:  # debug output to see what's going on
             print(f'iter={iter}, cost={cost}, theta={theta}')
     print(f'Gradient descent is done with theta_0={theta[0]} and theta_1={theta[1]}')
 
