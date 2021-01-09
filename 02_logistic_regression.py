@@ -15,46 +15,46 @@ def hypothesis(x, θ):
     return 1 / (1 + np.power(np.e, -z))
 
 
-# Cost function aka J(θ) is MSE (Mean Squared Error)
-def cost_function(x, y, theta):
+# Cost function aka J(θ)
+def cost_function(x, y, θ):
     m = len(x)  # number of rows
-    sqr_sum = 0
+    sum = 0
     for i in range(m):
-        sqr_sum += pow(hypothesis(x[i], theta) - y[i], 2)
-    return sqr_sum / (2 * m)
+        h = hypothesis(x[i], θ)
+        sum += y[i] * np.log(h) + (1 - y[i]) * np.log(1 - h)
+    return -sum / m
 
 
 # Gradient descent algorithm
-def gradient_descent(x, y):
+def gradient_descent(x, y, α):
     steps_l = []  # list for visualizing data
     n_iter = 500  # number of descent iterations
     visualize_step = round(n_iter / 20)  # we want to have 30 frames in visualization because it looks good
-    alpha = 0.05  # learning rate
     m = len(x)  # number of rows
-    theta = np.array([0, 0])
+    θ = np.array([0, 0])
 
     # normalizing feature x_1
     x_norm = x.copy()
-    max_x1 = max(np.abs(x[:, 1]))
-    x_norm[:, 1] = x_norm[:, 1] / max_x1
+    # max_x1 = max(np.abs(x[:, 1]))
+    # x_norm[:, 1] = x_norm[:, 1] / max_x1
 
     # gradient descent
     for iter in range(n_iter):
         sum_0 = 0
         sum_1 = 0
         for i in range(m):
-            y_hypothesis = hypothesis(x_norm[i], theta)
+            y_hypothesis = hypothesis(x_norm[i], θ)
             sum_0 += (y_hypothesis - y[i]) * x_norm[i][0]
             sum_1 += (y_hypothesis - y[i]) * x_norm[i][1]
             if iter % visualize_step == 0:  # add visualization data
                 steps_l.append([x[i][1], y_hypothesis, iter])
-        new_theta_0 = theta[0] - alpha * sum_0 / m
-        new_theta_1 = theta[1] - alpha * sum_1 / m
-        theta = [new_theta_0, new_theta_1]
-        cost = cost_function(x, y, theta)
+        new_theta_0 = θ[0] - α * sum_0 / m
+        new_theta_1 = θ[1] - α * sum_1 / m
+        θ = [new_theta_0, new_theta_1]
+        cost = cost_function(x, y, θ)
         if iter % visualize_step == 0:  # debug output to see what's going on
-            print(f'iter={iter}, cost={cost}, theta={theta}')
-    print(f'Gradient descent is done with theta_0={theta[0]} and theta_1={theta[1]}')
+            print(f'iter={iter}, cost={cost}, θ={θ}')
+    print(f'Gradient descent is done with theta_0={θ[0]} and theta_1={θ[1]}')
 
     # visualizing gradient descent
     df = pd.DataFrame(np.array(steps_l), columns=['x', 'y', 'step'])
@@ -71,4 +71,6 @@ def load_dataset():
 
 
 x, y = load_dataset()
-gradient_descent(x, y)
+λ_l = [0.3, 0.03]
+for λ in λ_l:
+    gradient_descent(x, y, λ)
