@@ -27,7 +27,7 @@ def cost_function(x, y, θ):
 def gradient_descent(x, y, α, normalize=True):
     steps_l = []  # list for visualizing data
     n_iter = 500  # number of descent iterations
-    visualize_step = round(n_iter / 20)  # we want to have 30 frames in visualization because it looks good
+    visualize_step = round(n_iter / 20)  # we want to have 20 frames in visualization because it looks good
     m = len(x)  # number of rows
     θ = np.array([0, 0])
 
@@ -79,10 +79,10 @@ def generate_dataset():
 
 
 x, y = generate_dataset()
-λ_l = [0.0605, 0.06, 0.05975, 0.05]
+α_l = [0.0605, 0.06, 0.05975, 0.05]
 figure_n = 1
-for λ in λ_l:
-    gradient_descent(x, y, λ, False)
-λ_l = [0.3, 0.03]
-for λ in λ_l:
-    gradient_descent(x, y, λ)
+for α in α_l:
+    gradient_descent(x, y, α, False)
+α_l = [0.3, 0.03]
+for α in α_l:
+    gradient_descent(x, y, α)
